@@ -3,17 +3,20 @@ import numpy as np
 from agent import PPOAgent
 
 
-
-
-if __name__=='__main__':
-    env = gym.make('ALE/DonkeyKong-v5')
+if __name__ == "__main__":
+    env = gym.make("ALE/DonkeyKong-v5")
     N = 20
     batch_size = 5
     n_epochs = 4
     alpha = 0.0003
-    agent = PPOAgent(n_actions=env.action_space.n, batch_size=batch_size,
-                     alpha=alpha, n_epochs=n_epochs, input_dims=env.observation_space.shape)
-    
+    agent = PPOAgent(
+        n_actions=env.action_space.n,
+        batch_size=batch_size,
+        alpha=alpha,
+        n_epochs=n_epochs,
+        input_dims=env.observation_space.shape,
+    )
+
     n_games = 300
 
     best_score = env.reward_range[0]
@@ -26,7 +29,8 @@ if __name__=='__main__':
     n_steps = 0
 
     for i in range(n_games):
-        observation,_ = env.reset()
+        observation, _ = env.reset()
+        observation_space = env.observation_space
         done = False
         truncated = False
         score = 0
@@ -46,5 +50,14 @@ if __name__=='__main__':
         if avg_score > best_score:
             best_score = avg_score
             agent.save()
-        
-        print('episode', i, 'score %.1f' % score, 'avg score %.1f' % avg_score, 'time_steps', n_steps, 'learning_steps',  learn_iters)
+
+        print(
+            "episode",
+            i,
+            "score %.1f" % score,
+            "avg score %.1f" % avg_score,
+            "time_steps",
+            n_steps,
+            "learning_steps",
+            learn_iters,
+        )
